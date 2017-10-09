@@ -134,7 +134,10 @@ public class RouterNanoHTTPD extends NanoHTTPD {
 
 		@Override
 		public Response get(UriResource uriResource, Map<String, String> urlParams, IHTTPSession session) {
-			return Response.newFixedLengthResponse(getStatus(), getMimeType(), getText());
+			Response resp = Response.newFixedLengthResponse(getStatus(), getMimeType(), getText());
+			resp.addHeader("Access-Control-Allow-Origin", session.getHeaders().get("origin"));
+			resp.addHeader("Access-Control-Allow-Credentials", "true");
+			return resp;
 		}
 
 		@Override
@@ -246,7 +249,8 @@ public class RouterNanoHTTPD extends NanoHTTPD {
 				try {
 					Response resp = Response.newChunkedResponse(getStatus(),
 							getMimeTypeForFile(fileOrdirectory.getName()), fileToInputStream(fileOrdirectory));
-					resp.addHeader("Access-Control-Allow-Origin", "*");
+					resp.addHeader("Access-Control-Allow-Origin", session.getHeaders().get("origin"));
+					resp.addHeader("Access-Control-Allow-Credentials", "true");
 					return resp;
 				} catch (IOException ioe) {
 					return Response.newFixedLengthResponse(Status.REQUEST_TIMEOUT, "text/plain", (String) null);
