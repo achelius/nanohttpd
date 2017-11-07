@@ -78,6 +78,8 @@ public class RouterNanoHTTPD extends NanoHTTPD {
 
 		public Response delete(UriResource uriResource, Map<String, String> urlParams, IHTTPSession session);
 
+		public Response patch(UriResource uriResource, Map<String, String> urlParams, IHTTPSession session);
+
 		public Response other(String method, UriResource uriResource, Map<String, String> urlParams,
 				IHTTPSession session);
 	}
@@ -111,6 +113,11 @@ public class RouterNanoHTTPD extends NanoHTTPD {
 
 		@Override
 		public Response delete(UriResource uriResource, Map<String, String> urlParams, IHTTPSession session) {
+			return get(uriResource, urlParams, session);
+		}
+
+		@Override
+		public Response patch(UriResource uriResource, Map<String, String> urlParams, IHTTPSession session) {
 			return get(uriResource, urlParams, session);
 		}
 
@@ -410,6 +417,8 @@ public class RouterNanoHTTPD extends NanoHTTPD {
 							return responder.put(this, urlParams, session);
 						case DELETE:
 							return responder.delete(this, urlParams, session);
+						case PATCH:
+							return responder.patch(this, urlParams, session);
 						default:
 							return responder.other(session.getMethod().toString(), this, urlParams, session);
 						}
