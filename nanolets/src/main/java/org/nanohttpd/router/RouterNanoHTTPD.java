@@ -151,6 +151,7 @@ public class RouterNanoHTTPD extends NanoHTTPD {
 		public InputStream getData() {
 			throw new IllegalStateException("this method should not be called in a text based nanolet");
 		}
+
 	}
 
 	/**
